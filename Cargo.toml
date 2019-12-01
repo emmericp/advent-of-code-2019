@@ -1,0 +1,7 @@
+[package]
+name = "advent-of-code"
+version = "0.1.0"
+authors = ["Paul Emmerich <paul.emmerich@croit.io>"]
+edition = "2018"
+
+[dependencies]
