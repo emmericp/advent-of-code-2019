@@ -129,6 +129,9 @@ fn find_collisions(line1: Vec<LineSegment>, line2: Vec<LineSegment>) -> Vec<(i64
             }
         }
     }
+    if collisions[0].0 == 0 {
+        collisions.remove(0);
+    }
     return collisions;
 }
 
