@@ -5,7 +5,7 @@ fn main() {
     let file = File::open("./input/day2.txt").unwrap();
     let mut code = String::new();
     BufReader::new(file).read_line(&mut code).ok();
-    let memory: Vec<i64> = code.split(",").map(|e| e.trim().parse::<i64>().unwrap()).collect();
+    let memory: Vec<i64> = code.split(',').map(|e| e.trim().parse::<i64>().unwrap()).collect();
     for noun in 0..99 {
         for verb in 0..99 {
             let mut copy = memory.clone();
@@ -16,7 +16,7 @@ fn main() {
                 memory: &mut copy,
             };
             state.run();
-            if copy[0] == 19690720 {
+            if copy[0] == 19_690_720 {
                 dbg!(noun * 100 + verb);
             }
         }

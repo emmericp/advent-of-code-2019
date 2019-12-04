@@ -15,7 +15,7 @@ fn main() {
 }
 
 fn decode_input_string(input: &str) -> Vec<(&str, i64)> {
-    input.trim().split(",").map(|instruction| {
+    input.trim().split(',').map(|instruction| {
         (instruction.get(0..1).unwrap(), instruction.get(1..).unwrap().parse::<i64>().unwrap())
     }).collect()
 }
@@ -92,7 +92,7 @@ fn draw_segments(instructions: Vec<(&str, i64)>) -> Vec<LineSegment> {
         };
         result.push(seg);
     }
-    return result;
+    result
 }
 
 fn find_collisions(line1: Vec<LineSegment>, line2: Vec<LineSegment>) -> Vec<(i64, i64)> {
@@ -132,7 +132,7 @@ fn find_collisions(line1: Vec<LineSegment>, line2: Vec<LineSegment>) -> Vec<(i64
     if collisions[0].0 == 0 {
         collisions.remove(0);
     }
-    return collisions;
+    collisions
 }
 
 #[test]

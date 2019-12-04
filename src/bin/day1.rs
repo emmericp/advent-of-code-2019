@@ -18,7 +18,7 @@ fn main() {
 }
 
 fn fuel_for_mass(mass: i64) -> i64 {
-    return (mass / 3 - 2).max(0);
+    (mass / 3 - 2).max(0)
 }
 
 fn fuel_for_fuel(mass: i64) -> i64 {
@@ -26,7 +26,7 @@ fn fuel_for_fuel(mass: i64) -> i64 {
     if fuel == 0 {
         return 0;
     }
-    return fuel_for_fuel(fuel) + fuel;
+    fuel_for_fuel(fuel) + fuel
 }
 
 #[test]

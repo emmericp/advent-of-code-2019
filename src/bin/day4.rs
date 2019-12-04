@@ -1,8 +1,15 @@
+#![allow(clippy::unreadable_literal)]
+
+fn main() {
+    dbg!(count_valid_passwords(245318, 765747, is_valid_password_part1));
+    dbg!(count_valid_passwords(245318, 765747, is_valid_password_part2));
+}
+
 fn pass_to_digits(password: u32) -> Vec<u32> {
     return vec![
-        password / 100000,
-        password / 10000 % 10,
-        password / 1000 % 10,
+        password / 100_000,
+        password / 10_000 % 10,
+        password / 1_000 % 10,
         password / 100 % 10,
         password / 10 % 10,
         password % 10,
@@ -20,7 +27,7 @@ fn is_valid_password_part1(password: u32) -> bool {
             found_duplicate = true;
         }
     }
-    return found_duplicate;
+    found_duplicate
 }
 
 fn is_valid_password_part2(password: u32) -> bool {
@@ -43,7 +50,7 @@ fn is_valid_password_part2(password: u32) -> bool {
             current_run_count = 1;
         }
     }
-    return current_run_count == 2;
+    current_run_count == 2
 }
 
 fn count_valid_passwords(start: u32, end: u32, validator: fn(u32) -> bool) -> usize {
@@ -66,14 +73,4 @@ fn test_password_checker_part2() {
     assert!(!is_valid_password_part2(111111));
     assert!(!is_valid_password_part2(123444));
     assert!(is_valid_password_part2(112222));
-}
-
-#[test]
-fn part1() {
-    dbg!(count_valid_passwords(245318, 765747, is_valid_password_part1));
-}
-
-#[test]
-fn part2() {
-    dbg!(count_valid_passwords(245318, 765747, is_valid_password_part2));
 }
