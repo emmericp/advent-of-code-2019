@@ -65,12 +65,12 @@ fn test_step() {
     };
     assert!(state.step());
     assert_eq!(state.ip, 4);
-    assert_eq!(state.memory, vec![1, 4, 5, 6, 10, 20, 30]);
+    assert_eq!(state.memory, &vec![1, 4, 5, 6, 10, 20, 30]);
     state.ip = 0;
     state.memory[0] = 2;
     assert!(state.step());
     assert_eq!(state.ip, 4);
-    assert_eq!(state.memory, vec![2, 4, 5, 6, 10, 20, 200]);
+    assert_eq!(state.memory, &vec![2, 4, 5, 6, 10, 20, 200]);
 }
 
 #[test]
@@ -83,8 +83,8 @@ fn test_run() {
                           30, 40, 50],
     };
     state.run();
-    assert_eq!(state.memory, vec![3500, 9, 10, 70,
-                                  2, 3, 11, 0,
-                                  99,
-                                  30, 40, 50])
+    assert_eq!(state.memory, &vec![3500, 9, 10, 70,
+                                   2, 3, 11, 0,
+                                   99,
+                                   30, 40, 50])
 }
