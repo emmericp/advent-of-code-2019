@@ -7,7 +7,7 @@ fn main() {
     let mut code = String::new();
     BufReader::new(file).read_line(&mut code).ok();
     let mut cpu = IntCodeCpu::from_code(&code);
-    cpu.input = Some(5);
+    cpu.input.push_back(5);
     cpu.run();
     dbg!(cpu.output);
 }

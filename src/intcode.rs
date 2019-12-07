@@ -1,8 +1,10 @@
+use std::collections::VecDeque;
+
 #[derive(Clone)]
 pub struct IntCodeCpu {
     ip: usize,
-    running: bool,
-    pub input: Option<i64>,
+    pub running: bool,
+    pub input: VecDeque<i64>,
     pub output: Option<i64>,
     pub memory: Vec<i64>,
 }
@@ -29,7 +31,7 @@ impl IntCodeCpu {
         IntCodeCpu {
             ip: 0,
             running: true,
-            input: None,
+            input: VecDeque::new(),
             output: None,
             memory: code.split(',').map(|e| e.trim().parse::<i64>().unwrap()).collect(),
         }
@@ -39,6 +41,17 @@ impl IntCodeCpu {
         while self.running {
             self.step();
         }
+    }
+
+    pub fn run_until_out(&mut self) -> Option<i64> {
+        while self.running {
+            self.step();
+            if let Some(output) = self.output {
+                self.output = None;
+                return Some(output);
+            }
+        }
+        None
     }
 
     fn fetch_operand(&self, mode: ParameterMode, immediate: i64) -> i64 {
@@ -110,7 +123,7 @@ impl IntCodeCpu {
                 self.ip += 4;
             }
             Instruction::In { dst } => {
-                self.memory[*dst as usize] = self.input.unwrap();
+                self.memory[*dst as usize] = self.input.pop_front().unwrap();
                 self.ip += 2;
             }
             Instruction::Out { src } => {
@@ -179,7 +192,7 @@ fn test_run() {
 #[test]
 fn test_io() {
     let mut cpu = IntCodeCpu::from_code("3,0,4,0,99");
-    cpu.input = Some(1234);
+    cpu.input.push_back(1234);
     cpu.run();
     assert_eq!(cpu.output, Some(1234));
 }
@@ -198,12 +211,12 @@ fn test_parameter_modes() {
 fn test_conditions() {
     fn helper(code: &str, true_example: i64, false_example: i64) {
         let mut cpu = IntCodeCpu::from_code(code);
-        cpu.input = Some(true_example);
+        cpu.input.push_back(true_example);
         cpu.run();
         assert_eq!(cpu.output, Some(1));
 
         let mut cpu = IntCodeCpu::from_code(code);
-        cpu.input = Some(false_example);
+        cpu.input.push_back(false_example);
         cpu.run();
         assert_eq!(cpu.output, Some(0));
     }
