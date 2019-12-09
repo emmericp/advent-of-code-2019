@@ -19,7 +19,7 @@ fn part1(cpu: &IntCodeCpu) -> i64 {
             amp.input.push_back(*phase_setting);
             amp.input.push_back(out);
             amp.run();
-            out = amp.output.unwrap();
+            out = amp.output.pop_front().unwrap();
         }
         thrust.push(out);
     }
