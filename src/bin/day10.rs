@@ -1,5 +1,6 @@
 use std::fs;
 use itertools::Itertools;
+use advent_of_code::gcd;
 
 fn main() {
     let input = fs::read_to_string("./input/day10.txt").unwrap();
@@ -34,22 +35,10 @@ fn main() {
     }
 }
 
-fn gcd(mut a: i32, mut b: i32) -> i32 {
-    if a == 0 { return b.abs(); }
-    if b == 0 { return a.abs(); }
-    loop {
-        let h = a % b;
-        a = b;
-        b = h;
-        if b == 0 { break; };
-    }
-    a.abs()
-}
-
 fn get_direction(dst: (i32, i32), src: (i32, i32)) -> (i32, i32) {
     let x = dst.0 - src.0;
     let y = dst.1 - src.1;
-    let gcd = gcd(x, y);
+    let gcd = gcd(x.into(), y.into()) as i32;
     if gcd == 0 {
         (0, 0) // direction to itself
     } else {
