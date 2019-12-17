@@ -4,7 +4,8 @@ use itertools::Itertools;
 fn main() {
     let input = fs::read_to_string("./input/day16.txt").unwrap();
     dbg!(&digits_to_str(&part1(&input))[0..8]);
-    dbg!(&digits_to_str(&part2(&input))[0..8]);
+    // too slow for CI
+    //dbg!(&digits_to_str(&part2(&input))[0..8]);
 }
 
 fn part1(input: &str) -> Vec<i32> {
@@ -16,6 +17,7 @@ fn part1(input: &str) -> Vec<i32> {
 }
 
 // takes a few minutes but way faster than a naive brute force solution
+#[allow(dead_code)]
 fn part2(input: &str) -> Vec<i32> {
     let offset: u32 = input[0..7].parse().unwrap();
     let full_input = input.trim().repeat(10_000);
