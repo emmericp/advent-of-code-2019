@@ -16,5 +16,5 @@ jobs:
     - name: Execute binaries
       env:
         RUST_BACKTRACE: 1
-      run: for file in $(ls -1 src/bin) ; do cargo run --bin ${file%.rs} || exit $status ; done
+      run: for file in $(ls -1 src/bin) ; do cargo run --release --bin ${file%.rs} || exit $status ; done
 
