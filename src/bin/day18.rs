@@ -120,7 +120,7 @@ impl Display for BitmapKey {
 
 impl BitmapKey {
     fn bitmap_index_for(key: char) -> u64 {
-        1 << (key as u32 - b'a' as u32) as u64
+        1 << u64::from(key as u32 - u32::from(b'a'))
     }
 
     fn contains(self, key: char) -> bool {
