@@ -41,18 +41,14 @@ fn part1(cpu: &mut IntCodeCpu) {
     dbg!(crossings.iter().map(|(x, y)| x * y).sum::<usize>());
 }
 
-fn input_ascii(cpu: &mut IntCodeCpu, ascii: &str) {
-    ascii.chars().for_each(|c| cpu.input.push_back(c as i64));
-}
-
 fn part2(cpu: &mut IntCodeCpu) {
     // solved on paper
     cpu.memory[0] = 2;
-    input_ascii(cpu, "A,B,A,B,A,C,B,C,A,C\n");
-    input_ascii(cpu, "L,6,R,12,L,6\n");
-    input_ascii(cpu, "R,12,L,10,L,4,L,6\n");
-    input_ascii(cpu, "L,10,L,10,L,4,L,6\n");
-    input_ascii(cpu, "n\n");
+    cpu.input_ascii("A,B,A,B,A,C,B,C,A,C\n");
+    cpu.input_ascii("L,6,R,12,L,6\n");
+    cpu.input_ascii("R,12,L,10,L,4,L,6\n");
+    cpu.input_ascii("L,10,L,10,L,4,L,6\n");
+    cpu.input_ascii("n\n");
     cpu.run();
     dbg!(&cpu.output.pop_back());
 }

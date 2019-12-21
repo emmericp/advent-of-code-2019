@@ -58,6 +58,10 @@ impl IntCodeCpu {
         None
     }
 
+    pub fn input_ascii(&mut self, ascii: &str) {
+        ascii.chars().for_each(|c| self.input.push_back(c as i64));
+    }
+
     fn fetch_and_resize_memory(&mut self, addr: usize) -> i64 {
         if addr >= self.memory.len() {
             self.memory.resize(addr + 1, 0);
