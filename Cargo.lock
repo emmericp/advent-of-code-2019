@@ -14,6 +14,7 @@ dependencies = [
  "mod_exp 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "modinverse 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "permutohedron 0.2.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rayon 1.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]

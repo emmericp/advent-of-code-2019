@@ -1,14 +1,15 @@
 use std::fs;
 use advent_of_code::intcode::IntCodeCpu;
 use itertools::Itertools;
+use rayon::iter::{ParallelBridge, ParallelIterator};
 
 fn main() {
     let input = fs::read_to_string("./input/day21.txt").unwrap();
     let cpu = IntCodeCpu::from_code(&input);
-    // part 1 can be brute forced in ~2 minutes
-    //brute_force_search(&cpu, "WALK", "", &["A", "B", "C", "D", "T", "J"]);
+    // part 1 can be brute forced in a few seconds
+    brute_force_search(&cpu, "WALK", &["A", "B", "C", "D", "T", "J"]);
     print_cpu_result(&cpu, "WALK", &["OR A T", "AND C T", "NOT T J", "AND D J"]);
-    // part 2 can't be brute-forced :(
+    // part 2 can't be brute-forced in reasonable time :(
     print_cpu_result(&cpu, "RUN", &["OR A J", "AND B J", "AND C J", "NOT J J", "AND D J", "OR E T", "OR H T", "AND T J"]);
 }
 
@@ -30,9 +31,7 @@ fn print_cpu_result(cpu: &IntCodeCpu, mode: &str, inst: &[&str]) {
     }
 }
 
-#[allow(dead_code)]
-fn brute_force_search(cpu: &IntCodeCpu, mode: &str, prefix: &str, reg1: &[&str]) {
-    // part 1 can be brute-forced in ~2 minutes, part 2... nope.
+fn brute_force_search(cpu: &IntCodeCpu, mode: &str, reg1: &[&str]) {
     let operations = ["AND", "OR", "NOT"];
     let reg2 = ["T", "J"];
     let instructions: Vec<String> = operations
@@ -53,7 +52,6 @@ fn brute_force_search(cpu: &IntCodeCpu, mode: &str, prefix: &str, reg1: &[&str])
             instruction
         })
         .collect();
-    let mut count = 0;
     let result = instructions
         .iter()
         .cartesian_product(
@@ -65,17 +63,15 @@ fn brute_force_search(cpu: &IntCodeCpu, mode: &str, prefix: &str, reg1: &[&str])
         .cartesian_product(
             instructions.iter()
         )
-        .find(|(((op1, op2), op3), op4)| {
-            count += 1; if count % 1000 == 0 { dbg!(count); }
-            run_cpu(cpu, mode, prefix, op1, op2, op3, op4)
+        .par_bridge()
+        .find_any(|(((op1, op2), op3), op4)| {
+            run_cpu(cpu, mode, op1, op2, op3, op4)
         }).unwrap();
     dbg!(result);
 }
 
-#[allow(dead_code)]
-fn run_cpu(cpu: &IntCodeCpu, mode: &str, prefix: &str, op1: &str, op2: &str, op3: &str, op4: &str) -> bool {
+fn run_cpu(cpu: &IntCodeCpu, mode: &str, op1: &str, op2: &str, op3: &str, op4: &str) -> bool {
     let mut cpu = cpu.clone();
-    cpu.input_ascii(prefix);
     cpu.input_ascii(op1);
     cpu.input_ascii("\n");
     cpu.input_ascii(op2);
