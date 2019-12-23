@@ -48,6 +48,16 @@ impl IntCodeCpu {
         }
     }
 
+    pub fn run_until_io(&mut self) {
+        while self.running {
+            match self.step() {
+                Instruction::In { .. } => break,
+                Instruction::Out { .. } => break,
+                _ => {}
+            }
+        }
+    }
+
     pub fn run_until_out(&mut self) -> Option<i64> {
         while self.running {
             self.step();
@@ -164,7 +174,7 @@ impl IntCodeCpu {
                 self.ip += 4;
             }
             Instruction::In { dst } => {
-                let src = self.input.pop_front().unwrap();
+                let src = self.input.pop_front().unwrap_or(-1);
                 self.store_and_resize_memory(*dst as usize, src);
                 self.ip += 2;
             }
@@ -204,9 +214,10 @@ impl IntCodeCpu {
         }
     }
 
-    fn step(&mut self) {
+    fn step(&mut self) -> Instruction {
         let inst = self.fetch_and_decode();
         self.execute(&inst);
+        inst
     }
 }
 
