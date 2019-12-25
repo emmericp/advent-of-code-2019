@@ -70,6 +70,28 @@ impl IntCodeCpu {
 
     pub fn input_ascii(&mut self, ascii: &str) {
         ascii.chars().for_each(|c| self.input.push_back(c as i64));
+        while !self.input.is_empty() {
+            self.run_until_io()
+        }
+    }
+
+    pub fn read_ascii_line(&mut self) -> Option<String> {
+        let mut result = String::new();
+        loop {
+            self.run_until_io();
+            match self.output.pop_front() {
+                None => return None,
+                Some(c) => {
+                    let c = c as u8 as char;
+                    if c == '\n' {
+                        break;
+                    } else {
+                        result.push(c);
+                    }
+                },
+            }
+        }
+        Some(result)
     }
 
     fn fetch_and_resize_memory(&mut self, addr: usize) -> i64 {
